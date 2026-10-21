@@ -1,0 +1,316 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================================
+   RepoXray design tokens
+   ============================================================ */
+:root {
+  --background: #04060b;
+  --surface: #080c14;
+  --surface-raised: rgba(255, 255, 255, 0.025);
+  --panel-bg: rgba(10, 15, 24, 0.72);
+  --panel-border: rgba(148, 163, 184, 0.11);
+  --foreground: #e9eef7;
+  --muted: #8b98ab;
+  --faint: #5b6577;
+  --accent-cyan: #22d3ee;
+  --accent-indigo: #818cf8;
+  --accent-emerald: #34d399;
+  --accent-amber: #fbbf24;
+  --ring: rgba(34, 211, 238, 0.45);
+  --ease-smooth: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+* {
+  border-color: var(--panel-border);
+}
+
+html {
+  color-scheme: dark;
+  scrollbar-gutter: stable;
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+  min-height: 100vh;
+  letter-spacing: -0.011em;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: rgba(34, 211, 238, 0.28);
+  color: #ecfeff;
+}
+
+/* ============================================================
+   Scrollbars
+   ============================================================ */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(148, 163, 184, 0.22) transparent;
+}
+
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.18);
+  border-radius: 999px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(148, 163, 184, 0.34);
+  background-clip: padding-box;
+}
+
+/* ============================================================
+   Surfaces & chrome
+   ============================================================ */
+@layer components {
+  .panel {
+    @apply relative rounded-2xl border border-white/[0.055] bg-white/[0.018] backdrop-blur-xl;
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.04) inset,
+      0 24px 60px -40px rgba(0, 0, 0, 0.95);
+  }
+
+  .panel-quiet {
+    @apply relative rounded-xl border border-white/[0.05] bg-black/25;
+  }
+
+  .panel-header {
+    @apply flex items-center justify-between gap-3 border-b border-white/[0.055] px-4 py-3;
+  }
+
+  .label-xs {
+    @apply font-mono text-[10px] font-medium uppercase tracking-[0.16em] text-slate-500;
+  }
+
+  .hairline {
+    @apply h-px w-full bg-gradient-to-r from-transparent via-white/10 to-transparent;
+  }
+
+  /* Buttons ------------------------------------------------- */
+  .btn {
+    @apply inline-flex select-none items-center justify-center gap-1.5 rounded-lg border border-white/[0.07] bg-white/[0.03] px-3 py-1.5 font-mono text-[11px] font-medium text-slate-300 transition-all duration-200;
+    transition-timing-function: var(--ease-smooth);
+  }
+
+  .btn:hover {
+    @apply border-white/15 bg-white/[0.07] text-white;
+    transform: translateY(-1px);
+  }
+
+  .btn:active {
+    transform: translateY(0);
+  }
+
+  .btn:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 2px var(--background), 0 0 0 3px var(--ring);
+  }
+
+  .btn-ghost {
+    @apply border-transparent bg-transparent text-slate-400 hover:bg-white/[0.05] hover:text-white;
+  }
+
+  .btn-primary {
+    @apply border-transparent font-semibold text-slate-950;
+    background: linear-gradient(135deg, #67e8f9 0%, #22d3ee 45%, #818cf8 130%);
+    box-shadow: 0 8px 24px -12px rgba(34, 211, 238, 0.75);
+  }
+
+  .btn-primary:hover {
+    @apply text-slate-950;
+    filter: brightness(1.08);
+    box-shadow: 0 12px 30px -12px rgba(34, 211, 238, 0.85);
+  }
+
+  .icon-btn {
+    @apply inline-flex h-7 w-7 items-center justify-center rounded-md text-slate-400 transition-all duration-200 hover:bg-white/[0.07] hover:text-white;
+  }
+
+  .icon-btn:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 2px var(--background), 0 0 0 3px var(--ring);
+  }
+
+  /* Chips --------------------------------------------------- */
+  .chip {
+    @apply inline-flex items-center gap-1.5 rounded-md border border-white/[0.06] bg-white/[0.025] px-2 py-1 font-mono text-[10px] text-slate-400 transition-all duration-200;
+  }
+
+  .chip:hover {
+    @apply border-white/15 bg-white/[0.06] text-slate-100;
+  }
+
+  .chip-active {
+    @apply border-cyan-400/40 bg-cyan-400/10 text-cyan-200;
+    box-shadow: 0 0 0 1px rgba(34, 211, 238, 0.08), 0 0 22px -10px rgba(34, 211, 238, 0.6);
+  }
+
+  .chip-active:hover {
+    @apply border-cyan-300/60 bg-cyan-400/15 text-cyan-100;
+  }
+
+  .kbd {
+    @apply inline-flex min-w-[1.5rem] items-center justify-center rounded border border-white/10 bg-white/[0.06] px-1.5 py-0.5 font-mono text-[10px] font-semibold text-slate-300;
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.08) inset, 0 1px 2px rgba(0, 0, 0, 0.5);
+  }
+
+  .field {
+    @apply w-full rounded-lg border border-white/[0.08] bg-black/40 font-mono text-xs text-slate-100 placeholder:text-slate-600 transition-all duration-200;
+  }
+
+  .field:focus {
+    @apply border-cyan-400/50 bg-black/55 outline-none;
+    box-shadow: 0 0 0 3px rgba(34, 211, 238, 0.09);
+  }
+
+  /* Typography ---------------------------------------------- */
+  .text-gradient {
+    background: linear-gradient(120deg, #f8fafc 0%, #c7f5fb 38%, #8ec5ff 68%, #a5b4fc 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .text-gradient-accent {
+    background: linear-gradient(100deg, #67e8f9, #818cf8);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+}
+
+/* ============================================================
+   Ambient background
+   ============================================================ */
+.aurora-field {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.aurora-blob {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(90px);
+  opacity: 0.55;
+  will-change: transform;
+}
+
+.grid-overlay {
+  background-image:
+    linear-gradient(to right, rgba(148, 163, 184, 0.055) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(148, 163, 184, 0.055) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: radial-gradient(ellipse 90% 70% at 50% 30%, #000 20%, transparent 78%);
+  -webkit-mask-image: radial-gradient(ellipse 90% 70% at 50% 30%, #000 20%, transparent 78%);
+}
+
+.dot-grid {
+  background-image: radial-gradient(rgba(148, 163, 184, 0.16) 1px, transparent 1px);
+  background-size: 22px 22px;
+}
+
+.noise-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.028;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
+}
+
+/* ============================================================
+   Effects
+   ============================================================ */
+.glow-cyan {
+  box-shadow: 0 0 0 1px rgba(34, 211, 238, 0.22), 0 0 34px -12px rgba(34, 211, 238, 0.55);
+}
+
+.glow-soft {
+  box-shadow: 0 0 40px -18px rgba(34, 211, 238, 0.55);
+}
+
+.ring-accent {
+  box-shadow: 0 0 0 1px rgba(34, 211, 238, 0.45), 0 0 28px -10px rgba(34, 211, 238, 0.5);
+}
+
+.shimmer-text {
+  background: linear-gradient(
+    100deg,
+    rgba(148, 163, 184, 0.55) 20%,
+    rgba(248, 250, 252, 0.95) 42%,
+    rgba(148, 163, 184, 0.55) 64%
+  );
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: shimmer 3s linear infinite;
+}
+
+.scan-line {
+  position: absolute;
+  inset-inline: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(34, 211, 238, 0.55), transparent);
+  animation: scanline 4.5s var(--ease-smooth) infinite;
+}
+
+@keyframes scanline {
+  0% { top: 0%; opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { top: 100%; opacity: 0; }
+}
+
+.typing-dot {
+  @apply inline-block h-1 w-1 rounded-full bg-cyan-300;
+  animation: bounce-dot 1.2s infinite ease-in-out;
+}
+
+.typing-dot:nth-child(2) { animation-delay: 0.15s; }
+.typing-dot:nth-child(3) { animation-delay: 0.3s; }
+
+/* ============================================================
+   Cytoscape canvas companion styles
+   ============================================================ */
+.graph-canvas {
+  animation: fade-in 0.6s ease-out both;
+}
+
+.graph-canvas canvas {
+  outline: none !important;
+}
+
+/* ============================================================
+   Accessibility
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
